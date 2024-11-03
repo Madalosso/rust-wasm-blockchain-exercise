@@ -3,8 +3,12 @@ use crate::transaction::Transaction;
 use chrono::prelude::*;
 use sha2::{Digest, Sha256};
 
+use std::sync::atomic::{AtomicU64, Ordering};
+
+static NEXT_ID: AtomicU64 = AtomicU64::new(1);
+
 pub struct Block {
-    id: u32,
+    id: u64,
     timestamp: DateTime<Local>,
     transactions: Vec<Transaction>, //set max tx
     previous_hash: String,
@@ -12,7 +16,9 @@ pub struct Block {
 }
 
 impl Block {
-    pub fn new(id: u32, previous_hash: String) -> Block {
+    pub fn new(previous_hash: String) -> Block {
+        let id = NEXT_ID.fetch_add(1, Ordering::SeqCst);
+
         Block {
             id,
             timestamp: Local::now(),

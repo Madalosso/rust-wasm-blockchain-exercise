@@ -1,6 +1,7 @@
 use crate::transaction::Transaction;
 use std::collections::HashMap;
 
+#[derive(Debug)]
 pub struct Ledger {
     // consider using an enum to represent accounts
     pub accounts: HashMap<String, f64>,
@@ -21,7 +22,21 @@ impl Ledger {
         self.accounts.get(account_name).copied()
     }
 
-    pub fn validate_transaction(&self, transaction: &Transaction) -> Result<(), &str> {
+    // pub fn validate_transaction(&self, transaction: &Transaction) -> Result<(), &str> {
+    //   if let Some(origin_balance) = self.accounts.get(&transaction.origin) {
+    //     if *origin_balance < transaction.value {
+    //         return Err("Saldo insuficiente para a transação.");
+    //     }
+    // } else {
+    //     return Err("Conta de origem não existe.");
+    // }
+    // if self.accounts.get(&transaction.destination).is_none() {
+    //     return Err("Conta de destino não existe.");
+    // }
+    // }
+
+    pub fn process_transaction(&mut self, transaction: &Transaction) -> Result<(), &str> {
+        // Validate transaction.
         if let Some(origin_balance) = self.accounts.get(&transaction.origin) {
             if *origin_balance < transaction.value {
                 return Err("Saldo insuficiente para a transação.");
@@ -32,17 +47,6 @@ impl Ledger {
         if self.accounts.get(&transaction.destination).is_none() {
             return Err("Conta de destino não existe.");
         }
-        Ok(())
-    }
-
-    pub fn process_transaction(&mut self, transaction: &Transaction) -> Result<(), &str> {
-        {
-            let result = &self.validate_transaction(transaction);
-            if result.is_err() {
-                return result.clone();
-            }
-        }
-
         // Update balances after checking
         if let Some(origin_balance) = self.accounts.get_mut(&transaction.origin) {
             *origin_balance -= transaction.value;
