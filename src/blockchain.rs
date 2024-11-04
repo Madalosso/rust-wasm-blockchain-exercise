@@ -11,8 +11,8 @@ pub const TX_PER_BLOCK: u8 = 2;
 
 impl Blockchain {
     pub fn new() -> Blockchain {
-        let genesis_block = Block::new("0".to_string());
-
+        let mut genesis_block = Block::new("0".to_string());
+        genesis_block.calculate_hash();
         Blockchain {
             blocks: vec![genesis_block],
             ledger: Ledger::new(),
@@ -24,6 +24,16 @@ impl Blockchain {
         // validate the blockchain
         // return true if valid
         true
+    }
+
+    pub fn all_hashes(&self) -> Vec<String> {
+        self.blocks.iter().map(|b| b.hash.clone()).collect()
+    }
+
+    pub fn print_all_hashes(&self) {
+        for block in &self.blocks {
+            println!("Hash: {}", block.hash);
+        }
     }
 
     // user input for a transaction

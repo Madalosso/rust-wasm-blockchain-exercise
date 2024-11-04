@@ -7,6 +7,7 @@ use std::sync::atomic::{AtomicU64, Ordering};
 
 static NEXT_ID: AtomicU64 = AtomicU64::new(1);
 
+#[derive(Debug)]
 pub struct Block {
     id: u64,
     timestamp: DateTime<Local>,
@@ -49,5 +50,6 @@ impl Block {
 
         let hash = hasher.finalize();
         println!("hash: {:x}", hash);
+        self.hash = format!("{:x}", hash);
     }
 }

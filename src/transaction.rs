@@ -2,7 +2,7 @@ use std::sync::atomic::{AtomicU64, Ordering};
 
 static NEXT_ID: AtomicU64 = AtomicU64::new(1);
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub struct Transaction {
     pub id: u64,
     pub origin: String,
