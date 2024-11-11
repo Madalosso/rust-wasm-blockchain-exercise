@@ -19,6 +19,7 @@ impl Ledger {
     }
 
     pub fn get_balance(&self, account_name: &str) -> Option<f64> {
+        // Improve: return 0 if account doesn't exist
         self.accounts.get(account_name).copied()
     }
 
@@ -29,9 +30,11 @@ impl Ledger {
                 return Err("Saldo insuficiente para a transação.");
             }
         } else {
+            // Change this so this wouldn't be an issue, the issue should be that the account doesn't have balance
             return Err("Conta de origem não existe.");
         }
         if self.accounts.get(&transaction.destination).is_none() {
+            // Change this so any value would be valid and starting with a balance of 0
             return Err("Conta de destino não existe.");
         }
         // Update balances after checking

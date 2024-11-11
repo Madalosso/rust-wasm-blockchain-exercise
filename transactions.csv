@@ -1,0 +1,7 @@
+origin,destination,value
+Alice,Bob,10.0
+Bob,Alice,5.0
+Charlie,Alice,15.0
+Alice,Bob,10.0
+Bob,Bob,5.0
+Charlie,Alice,15.0
