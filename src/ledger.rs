@@ -22,19 +22,6 @@ impl Ledger {
         self.accounts.get(account_name).copied()
     }
 
-    // pub fn validate_transaction(&self, transaction: &Transaction) -> Result<(), &str> {
-    //   if let Some(origin_balance) = self.accounts.get(&transaction.origin) {
-    //     if *origin_balance < transaction.value {
-    //         return Err("Saldo insuficiente para a transação.");
-    //     }
-    // } else {
-    //     return Err("Conta de origem não existe.");
-    // }
-    // if self.accounts.get(&transaction.destination).is_none() {
-    //     return Err("Conta de destino não existe.");
-    // }
-    // }
-
     pub fn process_transaction(&mut self, transaction: &Transaction) -> Result<(), &str> {
         // Validate transaction.
         if let Some(origin_balance) = self.accounts.get(&transaction.origin) {

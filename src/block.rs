@@ -12,7 +12,7 @@ pub struct Block {
     id: u64,
     timestamp: DateTime<Local>,
     transactions: Vec<Transaction>, //set max tx
-    previous_hash: String,
+    pub previous_hash: String,
     pub hash: String,
 }
 
@@ -43,6 +43,7 @@ impl Block {
         let mut hasher = Sha256::new();
         let now = Local::now();
         hasher.update(self.id.to_string() + &now.to_string() + &self.previous_hash);
+        self.timestamp = now;
 
         for tx in &self.transactions {
             hasher.update(tx.id.to_string() + &tx.value.to_string() + &tx.origin + &tx.destination);

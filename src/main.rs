@@ -2,11 +2,8 @@ pub mod block;
 pub mod blockchain;
 pub mod ledger;
 pub mod transaction;
-pub mod wasm_interface;
 
 fn main() {
-    println!("Hello, world!");
-
     let mut bc = blockchain::Blockchain::new();
 
     let transactions = vec![
