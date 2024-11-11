@@ -54,3 +54,43 @@ impl Block {
         self.hash = format!("{:x}", hash);
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::transaction::Transaction;
+
+    #[test]
+    fn test_add_transaction() {
+        let mut block = Block::new("previous_hash".to_string());
+
+        // Add transactions until the block is full
+        for i in 0..TX_PER_BLOCK {
+            let transaction = Transaction::new(
+                format!("origin_{}", i),
+                format!("destination_{}", i),
+                i as f64,
+            );
+            assert!(block.add_transaction(transaction).is_ok());
+        }
+
+        // Adding another transaction should fail
+        let transaction = Transaction::new("origin".to_string(), "destination".to_string(), 10.0);
+        assert!(block.add_transaction(transaction).is_err());
+    }
+
+    #[test]
+    fn test_calculate_hash() {
+        let mut block = Block::new("previous_hash".to_string());
+
+        // Add a transaction
+        let transaction = Transaction::new("origin".to_string(), "destination".to_string(), 10.0);
+        block.add_transaction(transaction).unwrap();
+
+        // Calculate the hash
+        block.calculate_hash();
+
+        // Check that the hash is not empty
+        assert!(!block.hash.is_empty());
+    }
+}
