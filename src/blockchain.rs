@@ -2,6 +2,7 @@ use crate::block::Block;
 use crate::ledger::Ledger;
 use crate::transaction::Transaction;
 
+#[derive(Debug)]
 pub struct Blockchain {
     pub blocks: Vec<Block>,
     pub ledger: Ledger,

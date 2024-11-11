@@ -1,5 +1,6 @@
 use prettytable::{cell, row, Table};
 use std::io;
+use transaction::Transaction;
 
 pub mod block;
 pub mod blockchain;
@@ -15,7 +16,7 @@ fn main() {
         .expect("Failed to read line");
 
     let mut bc = blockchain::Blockchain::new();
-    println!("Blockchain created: {:?}", bc.ledger);
+    println!("Blockchain created: {:?}", bc);
 
     println!("Enter to load transactions from CSV file...");
     io::stdin()
@@ -50,9 +51,21 @@ fn main() {
     for tx in transactions {
         bc.add_transaction(tx).expect("Failed to add transaction");
     }
-
+    println!("Press Enter to check final state of blockchain");
+    io::stdin()
+        .read_line(&mut input)
+        .expect("Failed to read line");
     println!("Blockchain: {:?}", bc.ledger);
     println!("Blockchain: {:?}", bc.blocks);
 
     bc.print_all_hashes();
+
+    println!("Press Enter to try to add an invalid transaction");
+    io::stdin()
+        .read_line(&mut input)
+        .expect("Failed to read line");
+
+    let invalidTransaction = Transaction::new("Alice".to_string(), "Bob".to_string(), 150.0);
+    bc.add_transaction(invalidTransaction)
+        .expect("Failed to add transaction");
 }
